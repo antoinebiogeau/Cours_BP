@@ -6,7 +6,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Engine/Engine.h"
 #include "Math/UnrealMathUtility.h"
-// Sets default values
+
 ABp_RotatingTower_RndColors::ABp_RotatingTower_RndColors()
 {
     PrimaryActorTick.bCanEverTick = false;
@@ -23,7 +23,6 @@ ABp_RotatingTower_RndColors::ABp_RotatingTower_RndColors()
 void ABp_RotatingTower_RndColors::OnConstruction(const FTransform& T)
 {
     if(Stones_Z < 1 || !SM_Stone || !Material){ ISM->ClearInstances(); return; }
-    // Optionnel : vérifier SM_Stone->GetName() == "Sm_ChamferCube"
     ISM->ClearInstances();
     ISM->SetStaticMesh(SM_Stone);
     ISM->SetMaterial(0, Material);
