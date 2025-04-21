@@ -3,4 +3,18 @@
 #include "MyProject.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, MyProject, "MyProject" );
+void FMyProjectModule::StartupModule()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Module Started"));
+
+	FString ShaderDir = FPaths::Combine(FPaths::ProjectDir(), "Shaders");
+	AddShaderSourceDirectoryMapping("/Project", ShaderDir);
+}
+
+void FMyProjectModule::ShutdownModule()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Module Shutdown"));
+}
+
+IMPLEMENT_PRIMARY_GAME_MODULE( FMyProjectModule, MyProject, "MyProject" );
+
