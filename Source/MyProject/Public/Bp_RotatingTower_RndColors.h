@@ -20,15 +20,19 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TS")
 	int32 Stones_Z;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TS")
 	bool bRenderText;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TS")
 	UStaticMesh* SM_Stone;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TS")
 	UMaterialInterface* Material;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="C")
 	class UInstancedStaticMeshComponent* ISM;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="C")
 	class UTextRenderComponent* TXT;
 };
