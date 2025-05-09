@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
+#include "Engine/StaticMesh.h"
 #include "BasicTreeGenerator.generated.h"
 
 UCLASS()
@@ -14,57 +15,39 @@ class MYPROJECT_API ABasicTreeGenerator : public AActor
 
 public:
     ABasicTreeGenerator();
-
-#if WITH_EDITOR
     virtual void OnConstruction(const FTransform& Transform) override;
-#endif
 
 protected:
-    // Root and trunk spline
-    UPROPERTY(VisibleAnywhere, Category="Tree")
-    USceneComponent* Root;
+    UPROPERTY(VisibleAnywhere, Category = "Tree|Components")
+    USceneComponent* RootComp;
 
-    UPROPERTY(VisibleAnywhere, Category="Tree")
+    UPROPERTY(VisibleAnywhere, Category = "Tree|Components")
     USplineComponent* TrunkSpline;
 
-    // Trunk parameters
-    UPROPERTY(EditAnywhere, Category="Tree|Trunk") int32 TrunkPointCount = 20;
-    UPROPERTY(EditAnywhere, Category="Tree|Trunk") float MinTrunkSegmentLength = 100.f;
-    UPROPERTY(EditAnywhere, Category="Tree|Trunk") float MaxTrunkSegmentLength = 200.f;
-    UPROPERTY(EditAnywhere, Category="Tree|Trunk") float TrunkJitterAngle = 10.f;
+    UPROPERTY()
+    TArray<USplineMeshComponent*> SplineMeshes;
 
-    // Branch parameters
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float BranchStartRatio = 0.2f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") int32 BranchCount = 50;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") int32 BranchPointCount = 6;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float MinBranchLength = 300.f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float MaxBranchLength = 500.f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float BranchJitterAngle = 40.f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float BranchBaseRadius = 0.1f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float BranchTopRadius = 0.8f;
-    UPROPERTY(EditAnywhere, Category="Tree|Branch") float BranchTangentInfluence = 1.f;
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    int32 Seed = 521;
 
-    // Sub-branch parameters
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") int32 SubBranchCount = 20;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") int32 SubBranchPointCount = 4;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") float MinSubBranchLength = 150.f;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") float MaxSubBranchLength = 300.f;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") float SubBranchJitterAngle = 30.f;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") float SubBranchBaseRadius = 0.05f;
-    UPROPERTY(EditAnywhere, Category="Tree|SubBranch") float SubBranchTopRadius = 0.3f;
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk", meta = (ClampMin = "2", UIMin = "2"))
+    int32 NBTruncPoint = 20;
 
-    // Mesh settings
-    UPROPERTY(EditAnywhere, Category="Tree|Mesh") UStaticMesh* SegmentMesh;
-    UPROPERTY(EditAnywhere, Category="Tree|Mesh") float TangentScale = 1.f;
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    float MinDistPointTrunc = 100.f;
 
-private:
-    // Runtime containers
-    TArray<USplineMeshComponent*> MeshComponents;
-    TArray<USplineComponent*> BranchSplines;
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    float MaxDistPointTrunc = 200.f;
 
-    // Generation methods
-    void ClearAllComponents();
-    void BuildTrunk();
-    void BuildBranches();
-    void GenerateSubBranches(USplineComponent* ParentSpline, int32 Depth = 0);
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    float Angle = 10.f;
+
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    float BaseRadius = 1.5f;
+
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    float TopRadius = 0.5f;
+
+    UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
+    UStaticMesh* TrunkMesh;
 };
