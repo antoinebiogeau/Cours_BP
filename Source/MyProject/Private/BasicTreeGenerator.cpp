@@ -18,7 +18,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
 {
     Super::OnConstruction(Transform);
 
-    // Clear previous dynamic components
+    // Clear 
     TrunkSpline->ClearSplinePoints(false);
     for (USplineMeshComponent* Comp : SplineMeshes)
     {
@@ -44,7 +44,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
 
     FRandomStream Stream(Seed);
 
-    // 1) Build trunk spline
+    //generation du tronc avec le jitter
     FVector Pos = FVector::ZeroVector;
     FVector Dir = FVector::UpVector;
     for (int32 i = 0; i < NBTruncPoint; ++i)
@@ -62,7 +62,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
     }
     TrunkSpline->UpdateSpline();
 
-    // 2) Create trunk meshes
+    //spline mesh sur le tronc
     for (int32 i = 0; i < NBTruncPoint - 1; ++i)
     {
         USplineMeshComponent* SM = NewObject<USplineMeshComponent>(this, *FString::Printf(TEXT("SplineMesh_T_%d"), i));
@@ -83,11 +83,11 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
         SplineMeshes.Add(SM);
     }
 
-    // 3) Create branches and sub-branches
+    // branches et sub branches
     float TrLen = TrunkSpline->GetSplineLength();
     for (int32 b = 0; b < NbBranch; ++b)
     {
-        // --- Branch spline setup ---
+        
         float T0 = FMath::Lerp(BranchStart, 1.f, Stream.FRand());
         FVector BStartLoc = TrunkSpline->GetLocationAtDistanceAlongSpline(TrLen * T0, ESplineCoordinateSpace::Local);
         FVector BTan = TrunkSpline->GetTangentAtDistanceAlongSpline(TrLen * T0, ESplineCoordinateSpace::Local).GetSafeNormal();
@@ -100,7 +100,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
 
         BranchSplines.Add(BranchSpline);
 
-        // Determine initial direction
+        // la direxction de la branche
         FVector DirB = BranchDirectionBias == 0.f ? Stream.VRand().GetSafeNormal() : (BTan * BranchDirectionBias).GetSafeNormal();
         FVector CurPosB = BStartLoc;
         for (int32 p = 1; p < NbPointBranch; ++p)
@@ -115,7 +115,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
         }
         BranchSpline->UpdateSpline();
 
-        // Branch meshes
+        // meshs sur la branche
         for (int32 i = 0; i < NbPointBranch - 1; ++i)
         {
             USplineMeshComponent* BM = NewObject<USplineMeshComponent>(this);
@@ -136,7 +136,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
             SplineMeshes.Add(BM);
         }
 
-        // --- Sub-branches ---
+        // Sub-branches
         float BrLen = BranchSpline->GetSplineLength();
         for (int32 sb = 0; sb < NbSub; ++sb)
         {
@@ -160,7 +160,7 @@ void ABasicTreeGenerator::OnConstruction(const FTransform& Transform)
             }
             SubSpline->UpdateSpline();
 
-            // Sub-branch meshes
+            // Sub-branches meshes
             for (int32 i2 = 0; i2 < NbPointSubBranch - 1; ++i2)
             {
                 USplineMeshComponent* SM2 = NewObject<USplineMeshComponent>(this);

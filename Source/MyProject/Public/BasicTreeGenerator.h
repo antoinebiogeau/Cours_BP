@@ -18,14 +18,10 @@ public:
     virtual void OnConstruction(const FTransform& Transform) override;
 
 protected:
-    // Root component and trunk spline
     UPROPERTY(VisibleAnywhere, Category = "Tree|Components")
     USceneComponent* RootComp;
-
     UPROPERTY(VisibleAnywhere, Category = "Tree|Components")
     USplineComponent* TrunkSpline;
-
-    // Keep track of dynamic components to clear
     UPROPERTY()
     TArray<USplineMeshComponent*> SplineMeshes;
     UPROPERTY()
@@ -33,7 +29,7 @@ protected:
     UPROPERTY()
     TArray<USplineComponent*> SubBranchSplines;
 
-    // Trunk parameters
+    // Trunk
     UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
     int32 Seed = 521;
 
@@ -58,7 +54,7 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Tree|Trunk")
     UStaticMesh* TrunkMesh;
 
-    // Branch parameters
+    // Branch
     UPROPERTY(EditAnywhere, Category = "Tree|Branch", meta = (ClampMin = "0", ClampMax = "1"))
     float BranchStart = 0.2f;
 
@@ -89,7 +85,7 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Tree|Branch", meta = (ClampMin = "-1", ClampMax = "1"))
     float BranchDirectionBias = 0.f;
 
-    // Sub-branch parameters
+    // Sub-branch
     UPROPERTY(EditAnywhere, Category = "Tree|SubBranch", meta = (ClampMin = "2", UIMin = "2"))
     int32 NbPointSubBranch = 4;
 
